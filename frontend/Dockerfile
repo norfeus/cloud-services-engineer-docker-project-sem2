@@ -8,8 +8,8 @@ RUN apk update && \
 WORKDIR /app
 
 ENV NODE_ENV=development
-ENV VUE_APP_API_URL=/api
-ENV NODE_OPTIONS=--openssl-legacy-provider
+#ENV VUE_APP_API_URL=/api
+#ENV NODE_OPTIONS=--openssl-legacy-provider
 
 # Копируем только package.json и package-lock.json для кэширования зависимостей
 COPY package.json package-lock.json ./
