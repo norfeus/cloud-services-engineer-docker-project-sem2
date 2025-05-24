@@ -23,7 +23,7 @@ COPY --from=builder /usr/src/app/dist /usr/share/nginx/html
 # Копируем кастомную конфигурацию Nginx
 #COPY --from=builder /usr/src/app/nginx.conf /etc/nginx/nginx.conf
 #COPY --from=builder /usr/src/app/default.conf /etc/nginx/conf.d/default.conf
-COPY --from=builder nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder /usr/src/app/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 8081
 
