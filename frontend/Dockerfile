@@ -25,6 +25,6 @@ COPY --from=builder /usr/src/app/dist /usr/share/nginx/html
 #COPY --from=builder /usr/src/app/default.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /usr/src/app/nginx.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 8081
+EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
