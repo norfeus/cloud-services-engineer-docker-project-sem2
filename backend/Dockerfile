@@ -1,5 +1,5 @@
 # Stage 1: Build the Go application
-FROM golang:1.23 as builder
+FROM golang:1.23 AS builder
 
 WORKDIR /app
 
@@ -12,10 +12,7 @@ COPY . .
 RUN CGO_ENABLED=0 go build -o momo-store ./cmd/api
 
 # Stage 2: Minimal runtime image
-FROM gcr.io/distroless/static-debian12
-
-RUN addgroup -g 1001 -S mygroup && \
-    adduser -u 1001 -S myuser -G mygroup
+FROM alpine:3.19
 
 # Создаём рабочую директорию
 WORKDIR /app
@@ -26,7 +23,9 @@ COPY --from=builder /app/momo-store .
 # Создаём непривилегированного пользователя
 #RUN adduser --disabled-password --gecos '' myuser
 
+RUN adduser -D -g '' myuser && chown -R myuser /app
 USER myuser
+
 EXPOSE 8080
 
 # Запускаем приложение
