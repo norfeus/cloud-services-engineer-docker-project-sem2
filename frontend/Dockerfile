@@ -1,5 +1,5 @@
 ARG NODE_VERSION=16
-ARG VUE_APP_API_URL=/momo-store/
+#ARG VUE_APP_API_URL=/momo-store/
 
 FROM node:${NODE_VERSION}-alpine AS builder
 # Stage 1: Build the Vue application
