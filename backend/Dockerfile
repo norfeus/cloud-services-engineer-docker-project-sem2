@@ -13,6 +13,7 @@ RUN CGO_ENABLED=0 go build -o /go/bin/app ./cmd/api
 # Stage 2: Minimal runtime image
 FROM gcr.io/distroless/static-debian12
 ADD --chown=65532:65532 https://github.com/jungsoft/docker-healthcheck/releases/download/0.1.0/healthcheck_alpine_amd64 /usr/local/bin/healthcheck
+RUN chmod a+x /usr/local/bin/healthcheck
 WORKDIR /app
 COPY --from=builder --chown=65532:65532 /go/bin/app .
 #COPY --from=builder --chown=65532:65532 /usr/local/bin/healthcheck /usr/local/bin/healthcheck
