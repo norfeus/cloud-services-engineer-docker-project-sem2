@@ -29,4 +29,4 @@ USER myuser
 EXPOSE 8080
 
 # Запускаем приложение
-CMD ["/app"]
+CMD ["/app/app"]
