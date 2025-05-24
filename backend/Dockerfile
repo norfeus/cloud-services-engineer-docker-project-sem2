@@ -11,7 +11,7 @@ RUN chmod a+x /usr/bin/curl
 FROM gcr.io/distroless/static-debian12
 WORKDIR /app
 COPY --from=builder --chown=65532:65532 /go/bin/app .
-COPY --from=builder --chown=65532:65532 /usr/bin/curl /usr/bin/curl
+COPY --from=builder --chown=65532:65532 /usr/bin/curl .
 
 
 
@@ -20,6 +20,6 @@ EXPOSE 8081
 
 HEALTHCHECK --interval=10s \
             --timeout=5s \
-            CMD ["/usr/bin/curl", "-f", "http://localhost:8081/health"]
+            CMD ["/app/curl", "-f", "http://localhost:8081/health"]
 
 CMD ["/app/app"]
