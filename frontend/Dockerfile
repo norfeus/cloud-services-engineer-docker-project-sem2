@@ -1,5 +1,9 @@
 # Stage 1: Build the Vue application
-FROM node:22-alpine AS builder
+FROM node:20-alpine AS builder
+
+RUN apk update && \
+    apk upgrade && \
+    apk add --no-cache python3 make g++
 
 WORKDIR /app
 
@@ -8,8 +12,6 @@ COPY package.json package-lock.json ./
 RUN npm ci --only=production
 
 # Копируем исходные файлы и собираем приложение
-COPY package*.json ./
-RUN npm ci
 COPY . .
 RUN npm run build
 
