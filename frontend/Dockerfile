@@ -1,5 +1,5 @@
 # Stage 1: Build the Vue application
-FROM node:20-alpine AS builder
+FROM node:18-alpine AS builder
 
 RUN apk update && \
     apk upgrade && \
@@ -7,13 +7,18 @@ RUN apk update && \
 
 WORKDIR /app
 
-# Копируем только package.json и package-lock.json для кэширования зависимостей
-COPY package.json package-lock.json ./
-RUN npm ci --only=production
-
-ENV NODE_ENV=production
+ENV NODE_ENV=development
 ENV VUE_APP_API_URL=/api
 ENV NODE_OPTIONS=--openssl-legacy-provider
+
+# Копируем только package.json и package-lock.json для кэширования зависимостей
+COPY package.json package-lock.json ./
+RUN npm ci --no-audit --no-fund
+
+#COPY package.json package-lock.json ./
+#RUN npm ci --only=production
+
+
 
 # Копируем исходные файлы и собираем приложение
 COPY . .
