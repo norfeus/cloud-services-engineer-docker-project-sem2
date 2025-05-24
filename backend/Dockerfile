@@ -10,7 +10,7 @@ RUN CGO_ENABLED=0 go build -o /go/bin/app ./cmd/api
 FROM gcr.io/distroless/static-debian12
 WORKDIR /app
 COPY --from=builder /go/bin/app .
-COPY --from=builder /bin/wget /usr/bin/wget
+COPY --from=builder /usr/bin/curl /usr/bin/curl
 USER 65532:65532
 EXPOSE 8081
 CMD ["/app/app"]
