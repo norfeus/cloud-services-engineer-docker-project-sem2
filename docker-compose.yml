@@ -13,7 +13,7 @@ services:
       - app-network
     restart: unless-stopped
     environment:
-      - VUE_APP_API_URL=http://backend:8080
+      - VUE_APP_API_URL=http://backend:8081
     depends_on:
       - backend
     healthcheck:

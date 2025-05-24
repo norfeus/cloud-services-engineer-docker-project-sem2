@@ -9,7 +9,7 @@ RUN go mod download
 
 # Копируем исходный код и компилируем
 COPY . .
-RUN CGO_ENABLED=0 GOOS=linux go build -C cmd/api -a -installsuffix cgo -o momo-store 
+RUN CGO_ENABLED=0 go build -o momo-store ./cmd/api
 
 # Stage 2: Minimal runtime image
 FROM gcr.io/distroless/static-debian12
