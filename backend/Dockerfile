@@ -9,8 +9,8 @@ RUN CGO_ENABLED=0 go build -o /go/bin/app ./cmd/api
 # Stage 2: Minimal runtime image
 FROM gcr.io/distroless/static-debian12
 WORKDIR /app
-COPY --from=builder /go/bin/app .
-COPY --from=builder /usr/bin/curl /usr/bin/curl
+COPY --from=builder --chown=65532:65532 /go/bin/app .
+COPY --from=builder --chown=65532:65532 /usr/bin/curl /usr/bin/curl
 USER 65532:65532
 EXPOSE 8081
 CMD ["/app/app"]
