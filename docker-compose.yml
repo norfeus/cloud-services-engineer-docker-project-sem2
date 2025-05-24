@@ -7,6 +7,10 @@ services:
       dockerfile: Dockerfile
     image: norff/docker-project-frontend:latest
     container_name: app-frontend
+    cap_drop:
+      - all
+    security_opt:
+      - no-new-privileges:true
     ports:
       - "80:80"
     networks:
@@ -30,6 +34,10 @@ services:
       dockerfile: Dockerfile
     image: norff/docker-project-backend:latest
     container_name: app-backend
+    cap_drop:
+      - all
+    security_opt:
+      - no-new-privileges:true
     ports:
       - "8081:8081"
     #environment:
