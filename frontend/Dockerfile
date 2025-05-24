@@ -16,12 +16,11 @@ RUN VUE_APP_API_URL=$VUE_APP_API_URL npm run build
 
 # Stage 2: Serve with nginx
 FROM nginx:1.25-alpine
+RUN  touch /var/run/nginx.pid && \
+     chown -R nginx:nginx /var/cache/nginx /var/run/nginx.pid
 
-RUN rm -rf /usr/share/nginx/html && touch /var/run/nginx.pid && chown nginx:nginx /var/run/nginx.pid
-COPY --from=builder /usr/src/app/dist /usr/share/nginx/html
-COPY --from=builder /usr/src/app/nginx.conf /etc/nginx/conf.d/default.conf
-
-
+COPY --from=builder --chown=nginx:nginx /usr/src/app/dist /usr/share/nginx/html
+COPY --from=builder --chown=nginx:nginx /usr/src/app/nginx.conf /etc/nginx/conf.d/default.conf
 
 USER nginx
 
