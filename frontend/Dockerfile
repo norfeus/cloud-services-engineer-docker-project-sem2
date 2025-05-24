@@ -13,7 +13,7 @@ RUN npm ci
 # Копируем остальной код и собираем
 COPY . .
 #RUN npx browserslist@latest --update-db && npm install && npm run build
-#ENV NODE_ENV=production
+ENV NODE_ENV=production
 #ENV VUE_APP_API_URL=/api
 ENV NODE_OPTIONS=--openssl-legacy-provider
 
