@@ -12,7 +12,7 @@ COPY . .
 RUN CGO_ENABLED=0 go build -o momo-store ./cmd/api
 
 # Stage 2: Minimal runtime image
-FROM alpine:3.19
+FROM gcr.io/distroless/static-debian12
 
 # Создаём рабочую директорию
 WORKDIR /app
@@ -20,11 +20,8 @@ WORKDIR /app
 # Копируем бинарник из предыдущего этапа
 COPY --from=builder /app/momo-store .
 
-# Создаём непривилегированного пользователя
-#RUN adduser --disabled-password --gecos '' myuser
-
-RUN adduser -D -g '' myuser && chown -R myuser /app
-USER myuser
+# Используем UID 65532 (nobody)
+USER 65532:65532
 
 EXPOSE 8080
 
