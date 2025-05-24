@@ -1,5 +1,5 @@
 # Stage 1: Build the Vue application
-FROM node:22-alpine as builder
+FROM node:22-alpine AS builder
 
 WORKDIR /app
 
@@ -8,6 +8,8 @@ COPY package.json package-lock.json ./
 RUN npm ci --only=production
 
 # Копируем исходные файлы и собираем приложение
+COPY package*.json ./
+RUN npm ci
 COPY . .
 RUN npm run build
 
