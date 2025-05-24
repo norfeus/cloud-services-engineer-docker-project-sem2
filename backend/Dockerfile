@@ -9,7 +9,7 @@ RUN go mod download
 
 # Копируем исходный код и компилируем
 COPY . .
-RUN CGO_ENABLED=0 go build -o /myapi ./cmd/api/main.go
+RUN CGO_ENABLED=0 go build -o momo-store ./cmd/api
 
 # Stage 2: Minimal runtime image
 FROM gcr.io/distroless/static-debian12
@@ -18,7 +18,7 @@ FROM gcr.io/distroless/static-debian12
 WORKDIR /app
 
 # Копируем бинарник из предыдущего этапа
-COPY --from=builder /myapi /myapi
+COPY --from=builder /app/bin/app ./app
 
 # Создаём непривилегированного пользователя
 RUN adduser --disabled-password --gecos '' myuser
