@@ -11,6 +11,10 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --only=production
 
+ENV NODE_ENV=production
+ENV VUE_APP_API_URL=/api
+ENV NODE_OPTIONS=--openssl-legacy-provider
+
 # Копируем исходные файлы и собираем приложение
 COPY . .
 RUN npm run build
