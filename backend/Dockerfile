@@ -11,6 +11,9 @@ FROM gcr.io/distroless/static-debian12
 WORKDIR /app
 COPY --from=builder --chown=65532:65532 /go/bin/app .
 COPY --from=builder --chown=65532:65532 /usr/bin/curl /usr/bin/curl
+
+RUN chmod a+x /usr/bin/curl
+
 USER 65532:65532
 EXPOSE 8081
 
