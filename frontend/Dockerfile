@@ -1,5 +1,6 @@
 
 ARG NODE_VERSION=18
+ARG VUE_APP_API_URL
 #ARG VUE_APP_API_URL=/momo-store/
 
 FROM node:${NODE_VERSION}-alpine AS builder
@@ -9,6 +10,7 @@ WORKDIR /usr/src/app
 
 COPY package*.json .
 RUN npm ci
+    
 
 # Копируем остальной код и собираем
 COPY . .
@@ -17,7 +19,8 @@ ENV NODE_ENV=production
 #ENV VUE_APP_API_URL=/api
 ENV NODE_OPTIONS=--openssl-legacy-provider
 
-RUN npm run build
+
+RUN VUE_APP_API_URL=$VUE_APP_API_URL npm run build 
 
 # Stage 2: Serve with nginx
 FROM nginx:1.25-alpine
