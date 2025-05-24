@@ -9,7 +9,7 @@ RUN go mod download
 
 # Копируем исходный код и компилируем
 COPY . .
-RUN CGO_ENABLED=0 go build -o momo-store ./cmd/api
+RUN CGO_ENABLED=0 go build -o /go/bin/app ./cmd/api
 
 # Stage 2: Minimal runtime image
 FROM gcr.io/distroless/static-debian12
@@ -18,7 +18,7 @@ FROM gcr.io/distroless/static-debian12
 WORKDIR /app
 
 # Копируем бинарник из предыдущего этапа
-COPY --from=builder /app/momo-store .
+COPY --from=builder /go/bin/app .
 
 # Используем UID 65532 (nobody)
 USER 65532:65532
@@ -26,4 +26,4 @@ USER 65532:65532
 EXPOSE 8081
 
 # Запускаем приложение
-CMD ["/app/momo-store"]
+CMD ["/app/app"]
