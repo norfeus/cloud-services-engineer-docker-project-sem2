@@ -29,4 +29,4 @@ USER myuser
 EXPOSE 8080
 
 # Запускаем приложение
-CMD ["/app/app"]
+CMD ["/app/momo-store"]
