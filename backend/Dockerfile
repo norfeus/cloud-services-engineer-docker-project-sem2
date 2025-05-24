@@ -18,7 +18,7 @@ FROM gcr.io/distroless/static-debian12
 WORKDIR /app
 
 # Копируем бинарник из предыдущего этапа
-COPY --from=builder /app/bin/app ./app
+COPY --from=builder /app/momo-store .
 
 # Создаём непривилегированного пользователя
 RUN adduser --disabled-password --gecos '' myuser
@@ -26,4 +26,4 @@ USER myuser
 EXPOSE 8080
 
 # Запускаем приложение
-CMD ["/myapi"]
+CMD ["/app"]
