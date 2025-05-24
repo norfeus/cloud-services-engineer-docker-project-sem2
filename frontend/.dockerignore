@@ -6,7 +6,6 @@ yarn-error.log
 .gitignore
 .github
 .vscode
-*.md
 Dockerfile
 .DS_Store
 dist

@@ -5,7 +5,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    image: my-app-frontend:latest
+    image: norff/docker-project-frontend:latest
     container_name: app-frontend
     ports:
       - "80:80"
@@ -28,17 +28,17 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    image: my-app-backend:latest
+    image: norff/docker-project-backend:latest
     container_name: app-backend
     ports:
-      - "8080:8080"
+      - "8081:8081"
     environment:
-      - PORT=8080
+      - PORT=8081
     networks:
       - app-network
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "sh", "-c", "wget -qO- http://localhost:8080/health || exit 1"]
+      test: ["CMD", "sh", "-c", "wget -qO- http://localhost:8081/health || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
