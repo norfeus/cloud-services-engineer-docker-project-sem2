@@ -4,7 +4,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    image: norff/docker-project-frontend:latest
+    image: ${DOCKER_USERNAME}/docker-project-frontend:latest
     container_name: app-frontend
     cap_drop:
       - all
@@ -13,7 +13,8 @@ services:
     ports:
       - "80:80"
     networks:
-      - app-network
+      - public-network
+      - internal-network
     restart: unless-stopped
     depends_on:
       - backend
@@ -21,38 +22,44 @@ services:
       test: curl --fail http://localhost:80 || exit 1
       interval: 30s
       timeout: 10s
-      retries: 3
+      retries: 5
       start_period: 40s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
 
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    image: norff/docker-project-backend:latest
+    image: ${DOCKER_USERNAME}/docker-project-backend:latest
     container_name: app-backend
-    #cap_drop:
-    #  - all
-    #security_opt:
-    #  - no-new-privileges:true
+    cap_drop:
+      - all
+    security_opt:
+      - no-new-privileges:true
     ports:
       - "8081:8081"
     networks:
-      - app-network
+      - internal-network
     restart: unless-stopped
-    #environment:
-    #  - PORT=8081
     healthcheck:
-      #test: /usr/local/bin/healthcheck http://localhost:8081/health || exit 1
-      test: ["CMD", "/usr/bin/curl", "--fail", "-X", "GET", "http://localhost:8081/health"]
-      #test: ["CMD", "cat", "/etc/os-release"]
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8081/health"]
       interval: 30s
       timeout: 10s
-      retries: 3
+      retries: 5
       start_period: 40s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
 
 networks:
-  app-network:
+  public-network:
     driver: bridge
-
-# ==================== VOLUMES ====================
-#volumes:
+  internal-network:
+    driver: bridge
+    internal: true
