@@ -19,18 +19,57 @@ jobs:
           with:
             username: ${{ secrets.DOCKER_USER }}
             password: ${{ secrets.DOCKER_PASSWORD }}
+
+        - name: Run Hadolint for Backend Dockerfile
+          uses: hadolint/hadolint@v2
+          with:
+          dockerfile: backend/Dockerfile
+
+        - name: Run Hadolint for Frontend Dockerfile
+          uses: hadolint/hadolint@v2
+          with:
+             dockerfile: frontend/Dockerfile
+
         - name: Push Backend to DockerHub
           uses: docker/build-push-action@v4
           with:
             context: ./backend/
             push: true
             tags: ${{ secrets.DOCKER_USER }}/docker-project-backend:latest
+            
         - name: Push Frontend to DockerHub
           uses: docker/build-push-action@v4
           with:
             context: ./frontend/
             push: true
             tags: ${{ secrets.DOCKER_USER }}/docker-project-frontend:latest
+
+
+        - name: Scan Backend Image with Trivy
+          uses: aquasec/trivy-action@master
+          with:
+            image-ref: ${{ secrets.DOCKER_USER }}/docker-project-backend:latest
+            format: table
+            exit-code: "0"
+            vuln-type: os,library
+
+        - name: Scan Frontend Image with Trivy
+          uses: aquasec/trivy-action@master
+          with:
+            image-ref: ${{ secrets.DOCKER_USER }}/docker-project-frontend:latest
+            format: table
+            exit-code: "0"
+            vuln-type: os,library
+
+        - name: Generate SBOM for Backend with Syft
+          run: |
+            syft ${{ secrets.DOCKER_USER }}/docker-project-backend:latest -o json > sbom-backend.json
+          uses: anchore/syft@v0.42.0
+
+        - name: Generate SBOM for Frontend with Syft
+          run: |
+            syft ${{ secrets.DOCKER_USER }}/docker-project-frontend:latest -o json > sbom-frontend.json
+          uses: anchore/syft@v0.42.0
 
   run-with-docker-compose:
     name: Push Docker image to DockerHub
