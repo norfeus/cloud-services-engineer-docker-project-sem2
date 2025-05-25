@@ -28,7 +28,7 @@ FROM gcr.io/distroless/static-debian12
 
 WORKDIR /app
 COPY --from=builder --chown=65532:65532 /go/bin/app .
-COPY --from=busybox /bin/curl /usr/bin/curl
+COPY --from=busybox /bin/wget /usr/bin/wget
 COPY --from=busybox /bin/sh /bin/sh
 
 #COPY --from=healthchecker /bin/bash /bin/bash
