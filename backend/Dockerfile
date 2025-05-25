@@ -12,6 +12,8 @@ RUN CGO_ENABLED=0 go build -o /go/bin/app ./cmd/api
 #RUN chmod a+x /usr/local/bin/healthcheck
 
 # Stage 2: Add healthcheck tools
+#FROM busybox:1.35.0-uclibc as busybox
+
 FROM alpine:3.19 AS healthchecker
 RUN apk add --no-cache wget
 
@@ -21,6 +23,8 @@ FROM gcr.io/distroless/static-debian12
 WORKDIR /app
 COPY --from=builder --chown=65532:65532 /go/bin/app .
 COPY --from=healthchecker /usr/bin/wget /usr/bin/wget
+
+COPY --from=busybox:1.35.0-uclibc /bin/sh /bin/sh
 
 USER 65532:65532
 EXPOSE 8081
