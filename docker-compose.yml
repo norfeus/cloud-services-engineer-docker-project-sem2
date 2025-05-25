@@ -45,6 +45,7 @@ services:
     networks:
       - internal-network
     restart: unless-stopped
+    read_only: true
     healthcheck:
       test: ["CMD", "wget", "-q", "--spider", "http://localhost:8081/health"]
       interval: 30s
