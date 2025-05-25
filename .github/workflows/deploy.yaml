@@ -77,7 +77,7 @@ jobs:
             output: sbom-frontend.json
 
         - name: Upload SBOM files
-          uses: actions/upload-artifact@v3
+          uses: actions/upload-artifact@v4
           with:
             name: sboms
             path: |
