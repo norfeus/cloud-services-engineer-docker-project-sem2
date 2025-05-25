@@ -43,8 +43,8 @@ services:
       - PORT=8081
     healthcheck:
       #test: /usr/local/bin/healthcheck http://localhost:8081/health || exit 1
-      #test: ["CMD", "wget", "--no-check-certificate", "-qO-", "http://localhost:8081/health"]
-      test: ["CMD", "cat", "/etc/os-release"]
+      test: ["CMD", "wget", "--no-check-certificate", "-qO-", "http://localhost:8081/health"]
+      #test: ["CMD", "cat", "/etc/os-release"]
       interval: 30s
       timeout: 10s
       retries: 3
