@@ -49,7 +49,7 @@ jobs:
 
 
         - name: Scan Backend Image with Trivy
-          uses: aquasec/trivy-action@master
+          uses: aquasec/trivy-action@v1.4.12
           with:
             image-ref: ${{ secrets.DOCKER_USER }}/docker-project-backend:latest
             format: table
@@ -57,7 +57,7 @@ jobs:
             vuln-type: os,library
 
         - name: Scan Frontend Image with Trivy
-          uses: aquasec/trivy-action@master
+          uses: aquasec/trivy-action@v1.4.12
           with:
             image-ref: ${{ secrets.DOCKER_USER }}/docker-project-frontend:latest
             format: table
@@ -87,6 +87,8 @@ jobs:
   run-with-docker-compose:
     name: Push Docker image to DockerHub
     runs-on: ubuntu-latest
+    env:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USER }}
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
