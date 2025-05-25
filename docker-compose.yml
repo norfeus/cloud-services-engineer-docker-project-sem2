@@ -30,10 +30,10 @@ services:
       dockerfile: Dockerfile
     image: norff/docker-project-backend:latest
     container_name: app-backend
-    cap_drop:
-      - all
-    security_opt:
-      - no-new-privileges:true
+    #cap_drop:
+    #  - all
+    #security_opt:
+    #  - no-new-privileges:true
     ports:
       - "8081:8081"
     networks:
@@ -42,7 +42,8 @@ services:
     environment:
       - PORT=8081
     healthcheck:
-      test: /usr/local/bin/healthcheck http://localhost:8081/health || exit 1
+      #test: /usr/local/bin/healthcheck http://localhost:8081/health || exit 1
+      test: ["CMD", "wget", "--no-check-certificate", "-qO-", "http://localhost:8081/health"]
       interval: 30s
       timeout: 10s
       retries: 3
