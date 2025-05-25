@@ -13,11 +13,12 @@ RUN CGO_ENABLED=0 go build -o /go/bin/app ./cmd/api
 
 # Stage 2: Add healthcheck tools
 #FROM busybox:1.35.0-uclibc as busybox
+FROM busybox:uclibc AS busybox
 
-FROM debian:12-slim AS healthchecker
-RUN apt update && \
-    apt install -y --no-install-recommends git curl gnupg && \
-    rm -rf /var/lib/apt/lists/*
+#FROM debian:12-slim AS healthchecker
+#RUN apt update && \
+#    apt install -y --no-install-recommends git curl gnupg && \
+#    rm -rf /var/lib/apt/lists/*
 
 #FROM alpine:3.19 AS healthchecker
 #RUN apk add --no-cache wget
@@ -27,7 +28,9 @@ FROM gcr.io/distroless/base-debian12
 
 WORKDIR /app
 COPY --from=builder --chown=65532:65532 /go/bin/app .
-COPY --from=healthchecker --chown=65532:65532 /usr/bin/curl /usr/bin/curl
+COPY --from=busybox /bin/wget /usr/bin/wget
+COPY --from=busybox /bin/sh /bin/sh
+
 #COPY --from=healthchecker /bin/bash /bin/bash
 
 #COPY --from=busybox:1.35.0-uclibc /bin/sh /bin/sh
@@ -35,4 +38,4 @@ COPY --from=healthchecker --chown=65532:65532 /usr/bin/curl /usr/bin/curl
 USER 65532:65532
 EXPOSE 8081
 
-CMD ["/app/app"]
+ENTRYPOINT ["/app/app"]
