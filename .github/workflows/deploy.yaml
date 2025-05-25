@@ -65,13 +65,13 @@ jobs:
             vuln-type: os,library
 
         - name: Generate SBOM for Backend with Syft
-          uses: anchore/syft@v0.42.0
+          uses: anchore/sbom-action@v0
           with:
             image: ${{ secrets.DOCKER_USER }}/docker-project-backend:latest
             output: sbom-backend.json
 
         - name: Generate SBOM for Frontend with Syft
-          uses: anchore/syft@v0.42.0
+          uses: anchore/sbom-action@v0
           with:
             image: ${{ secrets.DOCKER_USER }}/docker-project-frontend:latest
             output: sbom-frontend.json
