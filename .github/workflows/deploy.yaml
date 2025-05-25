@@ -20,15 +20,18 @@ jobs:
             username: ${{ secrets.DOCKER_USER }}
             password: ${{ secrets.DOCKER_PASSWORD }}
 
-        - name: Run Hadolint for Backend Dockerfile
-          uses: hadolint/hadolint@v2
-          with:
-            dockerfile: backend/Dockerfile
+        - name: Install Hadolint
+          run: |
+            curl -L https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64  > /usr/local/bin/hadolint
+            chmod +x /usr/local/bin/hadolint
 
-        - name: Run Hadolint for Frontend Dockerfile
-          uses: hadolint/hadolint@v2
-          with:
-             dockerfile: frontend/Dockerfile
+        - name: Run Hadolint for Backend
+          run: |
+            hadolint backend/Dockerfile
+
+        - name: Run Hadolint for Frontend
+          run: |
+            hadolint frontend/Dockerfile
 
         - name: Push Backend to DockerHub
           uses: docker/build-push-action@v4
