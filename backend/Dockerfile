@@ -24,11 +24,11 @@ FROM busybox:uclibc AS busybox
 #RUN apk add --no-cache wget
 
 # Stage 2: Minimal runtime image
-FROM gcr.io/distroless/base-debian12
+FROM gcr.io/distroless/static-debian12
 
 WORKDIR /app
 COPY --from=builder --chown=65532:65532 /go/bin/app .
-COPY --from=busybox /bin/wget /usr/bin/wget
+COPY --from=busybox /bin/curl /usr/bin/curl
 COPY --from=busybox /bin/sh /bin/sh
 
 #COPY --from=healthchecker /bin/bash /bin/bash
