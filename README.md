@@ -192,10 +192,10 @@ norfeus
 
 ![actions 1](./scr1.png) 
 
-![actions 2](./scr1.png) 
+![actions 2](./scr2.png) 
 
 ### Внешний вид web-интерфейса: 
 
-![WEB UI](./scr1.png) 
+![WEB UI](./scr3.png) 
 
 
