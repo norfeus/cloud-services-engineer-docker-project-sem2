@@ -10,7 +10,7 @@
 
 Все компоненты приложения **контейнеризированы**, оптимизированы и безопасны:
 - Использованы многоэтапные сборки (`multi-stage builds`)
-- Минимальные базовые образы: `gcr.io/distroless/static-debian12`, `-alpine версии`
+- Минимальные базовые образы: `distroless - версии`, `-alpine версии`
 - Реализованы `healthcheck` и ограничения ресурсов
 - Настроен `docker-compose.yml` с сетями, volumes и зависимостями сервисов
 - В CI/CD реализовано:
@@ -103,13 +103,13 @@ docker run -d -p 80:80 <DOCKER_USERNAME>/docker-project-frontend:latest
 - **Не используется root-пользователь** внутри контейнеров
 - **Минимальные образы**:
   - Backend: `gcr.io/distroless/static-debian12` (~5MB)
-  - Frontend: `debian:12-slim` + `nginx:alpine`
+  - Frontend: `nginx:alpine`
 - **Ограничения возможностей контейнеров**:
   - `cap_drop: all`
   - `security_opt: no-new-privileges:true`
 - **Healthchecks**:
   - Backend: `wget -q --spider http://localhost:8081/health`
-  - Frontend: `cat /etc/os-release` (для `distroless`)
+  - Frontend: `curl --fail http://localhost:80`
 - **Сканер уязвимостей**: `Trivy` интегрирован в CI
 - **SBOM**: создаётся через `Syft`
 
@@ -168,7 +168,7 @@ docker run -d -p 80:80 <DOCKER_USERNAME>/docker-project-frontend:latest
 | Сервис | Базовый образ | Размер |
 |-------|---------------|--------|
 | Backend | distroless/static-debian12 | ~18MB |
-| Frontend | debian:12-slim + nginx | ~50MB |
+| Frontend | nginx:1.25-alpine | ~50MB |
 
 ---
 
